@@ -28,7 +28,16 @@ class PerfumeImageSerializer(serializers.ModelSerializer):
         model = PerfumeImage
         fields = ['image', 'is_primary']
 
-        
+
+class PerfumeListSerializer(serializers.ModelSerializer):
+    brand = serializers.CharField(source='brand.name')
+    images = PerfumeImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Perfume
+        fields = ['id', 'name', 'brand', 'price', 'images']
+
+
 class PerfumeSerializer(serializers.ModelSerializer):
     notes = PerfumeNoteSerializer(source='perfumenote_set', many=True, read_only=True)
     brand = BrandSerializer()

@@ -8,7 +8,7 @@ const navLinks = [
 
 export default function Navbar() {
     return (
-        <header className="sticky top-0 z-50 bg-background backdrop-blur-xl transition-all duration-300 ease-out border-b border-outline-variant/10">
+        <header className="sticky top-0 z-20 bg-background backdrop-blur-xl transition-all duration-300 ease-out border-b border-outline-variant/10">
             <nav className="flex justify-between items-center px-6 md:px-12 py-6 max-w-screen-2xl mx-auto">
 
                 {/* Logo */}

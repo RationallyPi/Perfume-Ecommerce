@@ -1,18 +1,23 @@
 import Image from "next/image";
-
-import PerfumeCard from "@/components/perfumeCard";
+import Arrivals from "@/components/Arrivals";
+import Hero from "@/components/Hero";
+import SeasonalPick from "@/components/SeasonalPick";
+import BestSellers from "@/components/BestSellers";
 
 
 export default async function Home() {
-  const res = await fetch('http://127.0.0.1:8000/api/perfumes/getperfume/')
+  const res = await fetch('http://127.0.0.1:8000/api/perfumes/getperfumeHome/')
   const perfumes = await res.json()
 
 
   return (
-    <div className="flex flex-row flex-wrap justify-content gap-4">
-      {perfumes.map((perfume: any) => (
-        <PerfumeCard key={perfume.id} {...perfume} />
-      ))}
+
+    <div>
+      <Hero />
+      <Arrivals heading="Recent Arrivals" perfumes={perfumes.new_arrivals} />
+      <SeasonalPick />
+      <Arrivals heading="Seasonal Picks" perfumes={perfumes.seasonal} />
+      <BestSellers perfumes={perfumes.restocked} />
     </div>
   );
 }

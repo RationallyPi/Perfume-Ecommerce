@@ -29,7 +29,7 @@ class Perfume(models.Model):
     description = models.TextField()
     family = models.ManyToManyField(Family,blank=True)
     note = models.ManyToManyField(Notes, through='PerfumeNote',blank=True)
-    date_added = models.DateTimeField(auto_now_add=True)
+    date_added = models.DateTimeField(auto_now_add=True,db_index=True)
     is_seasonal_pick = models.BooleanField(default=False)
     is_restocked = models.BooleanField(default=False)
     
