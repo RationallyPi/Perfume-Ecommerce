@@ -22,10 +22,10 @@ export default function BestSellers({ perfumes }: { perfumes: Perfume[] }) {
     const bottomWide = perfumes[3];
 
     return (
-        <section className="py-20 bg-[#f5f3ef]"> {/* Reduced section padding from 24 to 20 */}
-            <div className="max-w-screen-2xl mx-auto px-6 lg:px-24">
+        <section className="py-24 bg-surface"> {/* Reduced section padding from 24 to 20 */}
+            <div className="max-w-screen-2xl px-6 lg:px-24">
 
-                <div className="text-center mb-12"> {/* Reduced margin from 16 to 12 */}
+                <div className="mb-12"> {/* Reduced margin from 16 to 12 */}
                     <h2 className="font-headline text-4xl text-[#271310] mb-3">The Hall of Fame</h2>
                     <p className="text-[#504442] tracking-[0.3em] uppercase text-[10px] font-bold">
                         Most desired fragrances this month

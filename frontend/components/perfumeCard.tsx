@@ -1,3 +1,5 @@
+import image from "next/image";
+
 interface PerfumeCardProps {
     id: number;
     name: string;
@@ -9,6 +11,7 @@ export default function PerfumeCard({ id, name, brand, price, images }: PerfumeC
     // Logic fix: Ensure we are accessing the array correctly
     const imageObj = images?.find(img => img.is_primary) || images?.[0];
     const imagePath = imageObj?.image || '';
+    const BASE_URL = "http://127.0.0.1:8000";
 
     return (
         // Change this line:
@@ -16,7 +19,7 @@ export default function PerfumeCard({ id, name, brand, price, images }: PerfumeC
             <div className="aspect-[3/4] bg-[#efeeea] mb-6 overflow-hidden relative">
                 {imagePath ? (
                     <img
-                        src={`http://127.0.0.1:8000${imagePath}`}
+                        src={`${BASE_URL}${imagePath}`} // Ensure the URL is correct
                         alt={name}
                         className="w-full p-4 h-full object-contain group-hover:scale-105 transition-transform duration-700"
                     />
@@ -28,14 +31,14 @@ export default function PerfumeCard({ id, name, brand, price, images }: PerfumeC
             </div>
 
             <div className="space-y-1">
-                <h4 className="font-serif text-xl tracking-tight text-[#1b1c1a]">
+                <h4 className="font-body text-xl tracking-tight text-[#1b1c1a]">
                     {name}
                 </h4>
-                <p className="font-sans text-xs text-[#775a19] uppercase tracking-widest font-bold">
+                <p className="font-body text-xs text-[#775a19] uppercase tracking-widest font-bold">
                     {brand}
                 </p>
-                <p className="font-sans font-bold text-sm text-[#1b1c1a] pt-2">
-                    NRS{parseFloat(price).toLocaleString('de-DE')}
+                <p className="font-body font-bold text-sm text-[#1b1c1a] pt-2">
+                    NRS {price}
                 </p>
             </div>
         </div>

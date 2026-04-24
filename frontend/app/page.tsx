@@ -3,6 +3,7 @@ import Arrivals from "@/components/Arrivals";
 import Hero from "@/components/Hero";
 import SeasonalPick from "@/components/SeasonalPick";
 import BestSellers from "@/components/BestSellers";
+import DecantsHighlight from "@/components/decantSection";
 
 
 export default async function Home() {
@@ -18,6 +19,7 @@ export default async function Home() {
       <SeasonalPick />
       <Arrivals heading="Seasonal Picks" perfumes={perfumes.seasonal} />
       <BestSellers perfumes={perfumes.restocked} />
+      <DecantsHighlight />
     </div>
   );
 }

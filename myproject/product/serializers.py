@@ -39,6 +39,7 @@ class PerfumeListSerializer(serializers.ModelSerializer):
 
 
 class PerfumeSerializer(serializers.ModelSerializer):
+
     notes = PerfumeNoteSerializer(source='perfumenote_set', many=True, read_only=True)
     brand = BrandSerializer()
     family = FamilySerializer(many=True)

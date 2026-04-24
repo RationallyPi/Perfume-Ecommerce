@@ -61,7 +61,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://192.168.1.88:3000',
 ]
-
+CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = 'myproject.urls'
 
 TEMPLATES = [

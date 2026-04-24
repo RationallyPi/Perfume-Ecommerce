@@ -7,12 +7,12 @@ export default function Hero() {
                 {/* 1. Left Content Section (5 Columns) */}
                 <div className="lg:col-span-5 z-10 flex flex-col justify-center order-2 lg:order-1 relative pb-12 lg:pb-0">
 
-                    <h1 className="font-serif text-6xl lg:text-8xl leading-[0.85] font-bold tracking-tighter mb-8 text-[#1b1c1a]">
+                    <h1 className="font-headline text-6xl lg:text-8xl leading-[0.85] font-bold tracking-tighter mb-8 text-[#1b1c1a]">
                         Vernal <br />
                         <span className="italic font-normal">Awakening</span>
                     </h1>
 
-                    <p className="font-sans text-base lg:text-lg text-[#444748] max-w-sm mb-12 leading-relaxed">
+                    <p className="font-body text-base lg:text-lg text-[#444748] max-w-sm mb-12 leading-relaxed">
                         A sensory rebirth. Discover a curation of olfactory narratives inspired by the precise moment a winter bud unfurls into the morning light.
                     </p>
 
@@ -41,9 +41,9 @@ export default function Hero() {
                     </div>
 
                     {/* Secondary Overlapping Image (Far Right, bottom corner of main image) */}
-                    <div className="absolute -bottom-5 -right-12 xl:-right-16 w-[40%] aspect-square bg-[#e3e2df] shadow-[20px_20px_50px_rgba(0,0,0,0.08)] border-[#faf9f5] overflow-hidden ">
+                    <div className="absolute -bottom-5 -right-12 xl:-right-16 rounded-[30px] w-[40%] aspect-3/4 bg-surface shadow-[20px_20px_50px_rgba(0,0,0,0.08)] border-[#faf9f5] overflow-hidden ">
                         <img
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover rounded-[30px] p-2"
                             src="https://i.pinimg.com/736x/8d/a0/d4/8da0d4e16fad5aeeb90e4d1fec9a6cfe.jpg"
                             alt="Botanical Detail"
                         />

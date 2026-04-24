@@ -28,7 +28,7 @@ export default function Arrivals({ heading, perfumes }: ArrivalsProps) {
 
                 <div className="flex justify-between items-end mb-10">
                     <div>
-                        <h3 className="font-heading text-4xl font-bold mt-4 tracking-tight text-[#1b1c1a]">{heading}</h3>
+                        <h3 className="font-headline text-4xl mt-4 tracking-tight text-[#1b1c1a]">{heading}</h3>
                     </div>
 
                     <div className="flex gap-4">
