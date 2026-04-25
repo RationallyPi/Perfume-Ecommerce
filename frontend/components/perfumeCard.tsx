@@ -1,4 +1,4 @@
-import image from "next/image";
+import Link from "next/link";
 
 interface PerfumeCardProps {
     id: number;
@@ -6,22 +6,22 @@ interface PerfumeCardProps {
     brand: string;
     price: string;
     images: { image: string; is_primary: boolean }[];
+    slug: string;
 }
-export default function PerfumeCard({ id, name, brand, price, images }: PerfumeCardProps) {
+export default function PerfumeCard({ id, name, brand, price, images, slug }: PerfumeCardProps) {
     // Logic fix: Ensure we are accessing the array correctly
     const imageObj = images?.find(img => img.is_primary) || images?.[0];
     const imagePath = imageObj?.image || '';
     const BASE_URL = "http://127.0.0.1:8000";
 
     return (
-        // Change this line:
-        <div className="w-full group cursor-pointer">
+        <Link href={`/perfume/${slug}`} className="w-full group cursor-pointer">
             <div className="aspect-[3/4] bg-[#efeeea] mb-6 overflow-hidden relative">
                 {imagePath ? (
                     <img
                         src={`${BASE_URL}${imagePath}`} // Ensure the URL is correct
                         alt={name}
-                        className="w-full p-4 h-full object-contain group-hover:scale-105 transition-transform duration-700"
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                     />
                 ) : (
                     <div className="w-full h-full bg-surface-container flex items-center justify-center">
@@ -41,7 +41,7 @@ export default function PerfumeCard({ id, name, brand, price, images }: PerfumeC
                     NRS {price}
                 </p>
             </div>
-        </div>
+        </Link>
     );
 }
 

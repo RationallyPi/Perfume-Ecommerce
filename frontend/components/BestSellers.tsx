@@ -12,10 +12,10 @@ export default function BestSellers({ perfumes }: { perfumes: Perfume[] }) {
     const BASE_URL = 'http://127.0.0.1:8000';
 
     const getImg = (perfume: Perfume) => {
-        const path = perfume.images?.find(img => img.is_primary)?.image || perfume.images?.[0]?.image;
-        return path ? `${BASE_URL}${path}` : '';
-    };
-
+        const secondary = perfume.images?.find(img => !img.is_primary)?.image
+            || perfume.images?.[0]?.image  // fallback to primary
+        return secondary ? `${BASE_URL}${secondary}` : '';
+    }
     const mainFeature = perfumes[0];
     const sideTop = perfumes[1];
     const sideMiddle = perfumes[2];
@@ -37,7 +37,7 @@ export default function BestSellers({ perfumes }: { perfumes: Perfume[] }) {
 
                     {/* Main Large Feature */}
                     {mainFeature && (
-                        <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-sm bg-[#e4e2de]">
+                        <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden bg-[#e4e2de]">
                             <img
                                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                                 src={getImg(mainFeature)}
@@ -57,7 +57,7 @@ export default function BestSellers({ perfumes }: { perfumes: Perfume[] }) {
 
                     {/* Side Item 1 */}
                     {sideTop && (
-                        <div className="relative group overflow-hidden rounded-sm bg-[#e4e2de]">
+                        <div className="relative group overflow-hidden bg-[#e4e2de]">
                             <img className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={getImg(sideTop)} alt={sideTop.name} />
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors"></div>
                             <div className="absolute bottom-4 left-5">
@@ -68,7 +68,7 @@ export default function BestSellers({ perfumes }: { perfumes: Perfume[] }) {
 
                     {/* Side Item 2 */}
                     {sideMiddle && (
-                        <div className="relative group overflow-hidden rounded-sm bg-[#e4e2de]">
+                        <div className="relative group overflow-hidden bg-[#e4e2de]">
                             <img className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={getImg(sideMiddle)} alt={sideMiddle.name} />
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors"></div>
                             <div className="absolute bottom-4 left-5">
@@ -79,7 +79,7 @@ export default function BestSellers({ perfumes }: { perfumes: Perfume[] }) {
 
                     {/* Bottom Wide Item */}
                     {bottomWide && (
-                        <div className="md:col-span-2 relative group overflow-hidden rounded-sm bg-[#e4e2de]">
+                        <div className="md:col-span-2 relative group overflow-hidden bg-[#e4e2de]">
                             <img className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={getImg(bottomWide)} alt={bottomWide.name} />
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors"></div>
                             <div className="absolute bottom-4 left-5">

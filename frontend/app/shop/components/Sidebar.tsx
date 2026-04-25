@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 interface ShopSidebarProps {
     brands: string[];
@@ -10,10 +11,18 @@ interface ShopSidebarProps {
 const GENDER_OPTIONS = ['Male', 'Female', 'Unisex'];
 
 export default function ShopSidebar({ brands, notes, families }: ShopSidebarProps) {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const [Filternotes, setNotes] = useState('');
+    const [Filterbrand, setBrand] = useState('');
     const [activeType, setActiveType] = useState('Perfume');
-    const [activeFamily, setActiveFamily] = useState<string[]>([]);
-    const [activeGender, setActiveGender] = useState<string[]>([]);
     const [priceRange, setPriceRange] = useState(50000);
+
+    const handlePriceCommit = () => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('price_max', priceRange.toString());
+        router.push(`/shop?${params.toString()}`);
+    }
 
     const toggleFilter = (item: string, list: string[], setList: (l: string[]) => void) => {
         setList(list.includes(item) ? list.filter(i => i !== item) : [...list, item]);
@@ -53,9 +62,33 @@ export default function ShopSidebar({ brands, notes, families }: ShopSidebarProp
                         <input
                             type="text"
                             list={id}
+                            onChange={(e) => {
+                                if (id === 'notes-list') {
+                                    setNotes(e.target.value);
+                                } else {
+                                    setBrand(e.target.value);
+                                }
+                            }}
+                            value={id === 'notes-list' ? Filternotes : Filterbrand}
                             placeholder={placeholder}
                             className="w-full bg-transparent border-b border-outline-variant py-2 px-1 text-sm focus:outline-none focus:border-black transition-colors"
                         />
+                        <button onClick={() => {
+                            const key = id === 'notes-list' ? 'note' : 'brand'
+                            const value = id === 'notes-list' ? Filternotes : Filterbrand
+                            if (!value) return  // don't add empty
+                            const params = new URLSearchParams(searchParams.toString())
+                            params.append(key, value)  // append allows multiple values
+                            router.push(`/shop?${params.toString()}`)
+                            // Reset input after adding filter
+                            if (id === 'notes-list') {
+                                setNotes('');
+                            } else {
+                                setBrand('');
+                            }
+                        }} className="my-2 px-3 py-2 bg-primary text-white transition-all text-sm hover:bg-surface-container-highest">
+                            Add
+                        </button>
                         <datalist id={id}>
                             {data.map((item) => <option key={item} value={item} />)}
                         </datalist>
@@ -70,8 +103,15 @@ export default function ShopSidebar({ brands, notes, families }: ShopSidebarProp
                     {families.map((f) => (
                         <button
                             key={f}
-                            onClick={() => toggleFilter(f, activeFamily, setActiveFamily)}
-                            className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all rounded-full border ${activeFamily.includes(f)
+                            onClick={() =>
+                                toggleFilter(f, searchParams.getAll('family'), (vals) => {
+                                    const params = new URLSearchParams(searchParams.toString());
+                                    params.delete('family');
+                                    vals.forEach(v => params.append('family', v));
+                                    router.push(`/shop?${params.toString()}`);
+                                })
+                            }
+                            className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all rounded-full border ${searchParams.getAll('family').includes(f)
                                 ? 'bg-black text-white border-black'
                                 : 'bg-surface-container-high border-transparent hover:border-outline-variant'
                                 }`}
@@ -89,8 +129,13 @@ export default function ShopSidebar({ brands, notes, families }: ShopSidebarProp
                     {GENDER_OPTIONS.map((g) => (
                         <button
                             key={g}
-                            onClick={() => toggleFilter(g, activeGender, setActiveGender)}
-                            className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all rounded-full border ${activeGender.includes(g)
+                            onClick={() => toggleFilter(g, searchParams.getAll('gender'), (vals) => {
+                                const params = new URLSearchParams(searchParams.toString());
+                                params.delete('gender');
+                                vals.forEach(v => params.append('gender', v));
+                                router.push(`/shop?${params.toString()}`);
+                            })}
+                            className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all rounded-full border ${searchParams.getAll('gender').includes(g)
                                 ? 'bg-black text-white border-black'
                                 : 'bg-surface-container-high border-transparent hover:border-outline-variant'
                                 }`}
@@ -113,7 +158,9 @@ export default function ShopSidebar({ brands, notes, families }: ShopSidebarProp
                     max="100000"
                     value={priceRange}
                     onChange={(e) => setPriceRange(parseInt(e.target.value))}
-                    className="w-full accent-black h-1 appearance-none cursor-pointer"
+                    onMouseUp={handlePriceCommit}
+                    onTouchEnd={handlePriceCommit}
+                    className="w-full accent-black h-1 cursor-pointer p-2 color-primary"
                 />
             </section>
 

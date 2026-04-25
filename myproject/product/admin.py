@@ -10,7 +10,7 @@ class PerfumeNoteInline(admin.TabularInline):
     extra = 3  # number of empty rows shown by default
 
 class PerfumeAdmin(admin.ModelAdmin):
-    inlines = [PerfumeNoteInline, PerfumeImageInline,]
+    inlines = [PerfumeNoteInline, PerfumeImageInline]
 
 admin.site.register(Perfume, PerfumeAdmin)
 admin.site.register(Notes)

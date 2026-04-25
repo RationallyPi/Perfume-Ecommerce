@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import PerfumeListSerializer
+from .serializers import PerfumeListSerializer, PerfumeSerializer
 from .models import Perfume
 
 class getPerfumeHome(APIView):
@@ -34,7 +34,7 @@ class ShopView(APIView):
         # Get filters from query params
         brand = request.query_params.get('brand')
         family = request.query_params.get('family')
-        note = request.query_params.get('note')
+        notes = request.query_params.getlist('note')
         price_max = request.query_params.get('price_max')
 
         perfumes = Perfume.objects.all()
@@ -44,8 +44,9 @@ class ShopView(APIView):
             perfumes = perfumes.filter(brand__name=brand)
         if family:
             perfumes = perfumes.filter(family__name=family)
-        if note:
-            perfumes = perfumes.filter(note__name=note)
+        if notes:
+            for note in notes:
+                perfumes = perfumes.filter(note__name=note)
         if price_max:
             perfumes = perfumes.filter(price__lte=price_max)
 
@@ -62,3 +63,8 @@ class ShopView(APIView):
             'page': page,
             'has_more': end < total
         })
+class PerfumeDetailView(APIView):
+    def get(self, request, slug):
+        perfume = Perfume.objects.get(slug=slug)
+        serializer = PerfumeSerializer(perfume)
+        return Response(serializer.data)

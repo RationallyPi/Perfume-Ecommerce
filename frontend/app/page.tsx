@@ -7,7 +7,7 @@ import DecantsHighlight from "@/components/decantSection";
 
 
 export default async function Home() {
-  const res = await fetch('http://127.0.0.1:8000/api/perfumes/getperfumeHome/')
+  const res = await fetch('http://127.0.0.1:8000/api/getperfumeHome/')
   const perfumes = await res.json()
 
 

@@ -35,7 +35,7 @@ class PerfumeListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Perfume
-        fields = ['id', 'name', 'brand', 'price', 'images']
+        fields = ['id', 'name', 'brand', 'price', 'images', 'slug']
 
 
 class PerfumeSerializer(serializers.ModelSerializer):
@@ -46,7 +46,7 @@ class PerfumeSerializer(serializers.ModelSerializer):
     images = PerfumeImageSerializer(many=True, read_only=True)
     class Meta:
         model = Perfume
-        exclude = ['note']
+        exclude = ['note','date_added','is_restocked','is_seasonal_pick']
     
     def to_representation(self, instance):
         data = super().to_representation(instance)

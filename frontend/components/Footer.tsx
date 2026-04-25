@@ -2,7 +2,7 @@ const links = ['Privacy Policy', 'Terms of Service', 'Shipping & Returns', 'Cont
 
 export default function Footer() {
     return (
-        <footer className="w-full bg-[#faf9f5] dark:bg-black px-12 py-24 flex flex-col items-center justify-center border-t border-black/5">
+        <footer className="w-full bg-[#faf9f5] dark:bg-black px-12 py-12 flex flex-col items-center justify-center border-t border-black/5">
 
             <div className="text-xl font-serif tracking-widest text-black dark:text-[#faf9f5] mb-12">
                 Redolence Nepal

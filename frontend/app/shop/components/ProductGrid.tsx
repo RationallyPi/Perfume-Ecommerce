@@ -3,14 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import PerfumeCard from '@/components/perfumeCard';
 
-interface Perfume {
-    id: number;
-    name: string;
-    brand: string;
-    price: string;
-    images: { image: string; is_primary: boolean }[];
-}
-
+import { PerfumeSummary as Perfume } from '@/types/perfumes';
 export default function ProductGrid() {
     const [perfumes, setPerfumes] = useState<Perfume[]>([]);
     const [page, setPage] = useState(1);
@@ -27,7 +20,7 @@ export default function ProductGrid() {
             ...Object.fromEntries(searchParams.entries())
         });
 
-        const res = await fetch(`http://127.0.0.1:8000/api/perfumes/shop/?${params}`);
+        const res = await fetch(`http://127.0.0.1:8000/api/shop/?${params}`);
         const data = await res.json();
 
         setPerfumes(prev => reset ? data.perfumes : [...prev, ...data.perfumes]);
