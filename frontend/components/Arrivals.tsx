@@ -2,10 +2,10 @@
 
 import PerfumeCard from "./perfumeCard";
 import { useRef } from 'react';
-
+import { PerfumeSummary } from "@/types/perfumes";
 type ArrivalsProps = {
     heading: string;
-    perfumes: any[]
+    perfumes: PerfumeSummary[]
 }
 
 export default function Arrivals({ heading, perfumes }: ArrivalsProps) {
@@ -13,7 +13,6 @@ export default function Arrivals({ heading, perfumes }: ArrivalsProps) {
 
     const scroll = (direction: 'left' | 'right') => {
         if (scrollRef.current) {
-            // Calculates width of one card + gap
             const scrollAmount = scrollRef.current.offsetWidth * 0.8;
             scrollRef.current.scrollBy({
                 left: direction === 'left' ? -scrollAmount : scrollAmount,
@@ -28,7 +27,7 @@ export default function Arrivals({ heading, perfumes }: ArrivalsProps) {
 
                 <div className="flex justify-between items-end mb-10">
                     <div>
-                        <h3 className="font-headline text-4xl mt-4 tracking-tight text-[#1b1c1a]">{heading}</h3>
+                        <h3 className="font-headline text-3xl mt-4 tracking-tight text-[#1b1c1a]">{heading}</h3>
                     </div>
 
                     <div className="flex gap-4">

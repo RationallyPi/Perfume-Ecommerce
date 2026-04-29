@@ -32,24 +32,6 @@ export default function ShopSidebar({ brands, notes, families }: ShopSidebarProp
         <aside className="w-full lg:w-72 flex-shrink-0 space-y-12 pr-8 border-r border-outline-variant/10">
 
             {/* Category */}
-            <section>
-                <h3 className="font-headline text-xs uppercase tracking-[0.3em] text-secondary font-bold mb-6">Category</h3>
-                <div className="flex flex-col gap-2">
-                    {['Perfume', 'Attars'].map((type) => (
-                        <button
-                            key={type}
-                            onClick={() => setActiveType(type)}
-                            className={`flex items-center justify-between px-4 py-3 transition-all duration-300 border ${activeType === type
-                                ? 'bg-black text-white border-black'
-                                : 'bg-transparent text-primary border-outline-variant/30 hover:border-black'
-                                }`}
-                        >
-                            <span className="text-xs uppercase tracking-widest font-bold">{type}</span>
-                            {activeType === type && <span className="material-symbols-outlined text-sm">check</span>}
-                        </button>
-                    ))}
-                </div>
-            </section>
 
             {/* Brand & Notes Search */}
             <section className="space-y-6">

@@ -8,6 +8,14 @@ export interface Notes {
     middle: string[];
     base: string[];
 }
+export interface Decant {
+    size: number;
+    price: number;
+}
+export interface PerformanceMetrics {
+    longevity: number;
+    sillage: number;
+}
 
 export interface Perfume {
     id?: number;
@@ -19,5 +27,16 @@ export interface Perfume {
     images: PerfumeImage[];
     notes: Notes;
     family: string[];
+    slug: string;
+    decant: Decant[];
+    performance: PerformanceMetrics[]
+}
+
+export interface PerfumeSummary {
+    id: number;
+    name: string;
+    brand: string;
+    price: string;
+    images: PerfumeImage[];
     slug: string;
 }

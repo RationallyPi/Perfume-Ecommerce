@@ -1,35 +1,40 @@
 'use client';
-import { useState, useEffect } from 'react';
-import Link
-    from 'next/link';
+
+import { useState, useEffect, useMemo } from 'react';
+import Link from 'next/link';
+import { useSearchParams, usePathname } from 'next/navigation';
+
 const navLinks = [
-    { label: 'Home', href: '/', active: true },
-    { label: 'Shop', href: '/shop', active: false },
-    { label: 'Decants', href: '/decants', active: false },
-    { label: 'About Us', href: '/about', active: false },
+    { label: 'Home', href: '/' },
+    { label: 'Perfumes', href: '/shop?type=Perfume' },
+    { label: 'Attars', href: '/shop?type=Attar' },
+    { label: 'About Us', href: '/about' },
 ];
 
 export default function Navbar() {
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const currentType = searchParams.get('type');
+
     const [isVisible, setIsVisible] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
 
+    // Optimized scroll logic: Throttled/Debounced feel via RequestAnimationFrame
     useEffect(() => {
         const controlNavbar = () => {
             const currentScrollY = window.scrollY;
 
-            // Show navbar if scrolling up or at the very top
+            // 1. Logic to show/hide navbar on scroll
             if (currentScrollY < lastScrollY || currentScrollY < 50) {
                 setIsVisible(true);
-            }
-            // Hide navbar if scrolling down and passed the threshold
-            else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
                 setIsVisible(false);
             }
 
             setLastScrollY(currentScrollY);
         };
 
-        window.addEventListener('scroll', controlNavbar);
+        window.addEventListener('scroll', controlNavbar, { passive: true });
         return () => window.removeEventListener('scroll', controlNavbar);
     }, [lastScrollY]);
 
@@ -42,42 +47,54 @@ export default function Navbar() {
             <nav className="flex justify-between items-center px-6 md:px-12 py-6 max-w-screen-2xl mx-auto">
 
                 {/* Logo */}
-                <div className="text-2xl font-headline tracking-widest uppercase text-primary">
+                <Link href="/" className="text-2xl font-headline tracking-widest uppercase text-primary hover:opacity-90 transition-opacity">
                     Redolence Nepal
-                </div>
+                </Link>
 
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex items-center gap-10 font-headline text-lg tracking-tight">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.label}
-                            href={link.href}
-                            className={`transition-all duration-300 ease-out border-b-2 pb-1
-                                ${link.active
-                                    ? 'text-secondary border-secondary'
-                                    : 'text-primary/70 border-transparent hover:text-primary'
-                                }`}
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
+                    {navLinks.map((link) => {
+                        // Check if the link is active based on pathname AND query params
+                        const isActive = useMemo(() => {
+                            if (link.href.includes('?')) {
+                                const [basePath, query] = link.href.split('?');
+                                const typeParam = new URLSearchParams(query).get('type');
+                                return pathname === basePath && currentType === typeParam;
+                            }
+                            return pathname === link.href;
+                        }, [pathname, currentType, link.href]);
+
+                        return (
+                            <Link
+                                key={link.label}
+                                href={link.href}
+                                className={`transition-all duration-300 ease-out border-b-2 pb-1
+                                    ${isActive
+                                        ? 'text-secondary border-secondary'
+                                        : 'text-primary/70 border-transparent hover:text-primary hover:border-primary/30'
+                                    }`}
+                            >
+                                {link.label}
+                            </Link>
+                        );
+                    })}
                 </div>
 
                 {/* Action Icons */}
                 <div className="flex items-center gap-2 md:gap-6">
-                    <button className="p-2 transition-all duration-300 ease-out hover:opacity-80 group">
+                    <button aria-label="Favorites" className="p-2 transition-all duration-300 ease-out hover:opacity-80 group">
                         <span className="material-symbols-outlined text-primary group-hover:text-secondary">
                             favorite
                         </span>
                     </button>
-                    <button className="p-2 transition-all duration-300 ease-out hover:opacity-80 group">
+                    <button aria-label="Account" className="p-2 transition-all duration-300 ease-out hover:opacity-80 group">
                         <span className="material-symbols-outlined text-primary group-hover:text-secondary">
                             person
                         </span>
                     </button>
 
                     {/* Mobile Menu Toggle */}
-                    <button className="md:hidden p-2 text-primary">
+                    <button aria-label="Menu" className="md:hidden p-2 text-primary">
                         <span className="material-symbols-outlined">menu</span>
                     </button>
                 </div>

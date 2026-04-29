@@ -1,14 +1,7 @@
 import Link from "next/link";
 
-interface PerfumeCardProps {
-    id: number;
-    name: string;
-    brand: string;
-    price: string;
-    images: { image: string; is_primary: boolean }[];
-    slug: string;
-}
-export default function PerfumeCard({ id, name, brand, price, images, slug }: PerfumeCardProps) {
+import { PerfumeSummary } from "@/types/perfumes";
+export default function PerfumeCard({ id, name, brand, price, images, slug }: PerfumeSummary) {
     // Logic fix: Ensure we are accessing the array correctly
     const imageObj = images?.find(img => img.is_primary) || images?.[0];
     const imagePath = imageObj?.image || '';
@@ -38,7 +31,7 @@ export default function PerfumeCard({ id, name, brand, price, images, slug }: Pe
                     {brand}
                 </p>
                 <p className="font-body font-bold text-sm text-[#1b1c1a] pt-2">
-                    NRS {price}
+                    NRS {Math.round(parseFloat(price)).toLocaleString()}
                 </p>
             </div>
         </Link>

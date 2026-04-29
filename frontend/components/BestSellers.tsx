@@ -1,17 +1,12 @@
 
 
-interface Perfume {
-    id: number;
-    name: string;
-    brand: string;
-    price: string;
-    images: { image: string; is_primary: boolean }[];
-}
+import { PerfumeSummary } from "@/types/perfumes";
+import Link from "next/link";
 
-export default function BestSellers({ perfumes }: { perfumes: Perfume[] }) {
+export default function BestSellers({ perfumes }: { perfumes: PerfumeSummary[] }) {
     const BASE_URL = 'http://127.0.0.1:8000';
 
-    const getImg = (perfume: Perfume) => {
+    const getImg = (perfume: PerfumeSummary) => {
         const secondary = perfume.images?.find(img => !img.is_primary)?.image
             || perfume.images?.[0]?.image  // fallback to primary
         return secondary ? `${BASE_URL}${secondary}` : '';
@@ -33,11 +28,12 @@ export default function BestSellers({ perfumes }: { perfumes: Perfume[] }) {
                 </div>
 
                 {/* Height reduced from 800px to 600px */}
+
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 h-auto md:h-[600px] lg:max-h-[75vh]">
 
                     {/* Main Large Feature */}
                     {mainFeature && (
-                        <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden bg-[#e4e2de]">
+                        <Link href={`/perfume/${mainFeature.slug}`} className="md:col-span-2 md:row-span-2 relative group overflow-hidden bg-[#e4e2de]">
                             <img
                                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                                 src={getImg(mainFeature)}
@@ -52,41 +48,42 @@ export default function BestSellers({ perfumes }: { perfumes: Perfume[] }) {
                                 <p className="text-white/80 mb-4 italic font-headline text-sm">{mainFeature.brand}</p>
                                 <button className="text-white border-b border-white/40 pb-1 text-[10px] tracking-widest uppercase hover:border-white transition-colors">Details</button>
                             </div>
-                        </div>
+                        </Link>
                     )}
+
 
                     {/* Side Item 1 */}
                     {sideTop && (
-                        <div className="relative group overflow-hidden bg-[#e4e2de]">
+                        <Link href={`/perfume/${sideTop.slug}`} className="relative group overflow-hidden bg-[#e4e2de]">
                             <img className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={getImg(sideTop)} alt={sideTop.name} />
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors"></div>
                             <div className="absolute bottom-4 left-5">
                                 <h4 className="font-headline text-lg text-white">{sideTop.name}</h4>
                             </div>
-                        </div>
+                        </Link>
                     )}
 
                     {/* Side Item 2 */}
                     {sideMiddle && (
-                        <div className="relative group overflow-hidden bg-[#e4e2de]">
+                        <Link href={`/perfume/${sideMiddle.slug}`} className="relative group overflow-hidden bg-[#e4e2de]">
                             <img className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={getImg(sideMiddle)} alt={sideMiddle.name} />
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors"></div>
                             <div className="absolute bottom-4 left-5">
                                 <h4 className="font-headline text-lg text-white">{sideMiddle.name}</h4>
                             </div>
-                        </div>
+                        </Link>
                     )}
 
                     {/* Bottom Wide Item */}
                     {bottomWide && (
-                        <div className="md:col-span-2 relative group overflow-hidden bg-[#e4e2de]">
+                        <Link href={`/perfume/${bottomWide.slug}`} className="md:col-span-2 relative group overflow-hidden bg-[#e4e2de]">
                             <img className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={getImg(bottomWide)} alt={bottomWide.name} />
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors"></div>
                             <div className="absolute bottom-4 left-5">
                                 <h4 className="font-headline text-lg text-white uppercase tracking-widest">{bottomWide.name}</h4>
                                 <p className="text-white/80 text-[10px] italic">{bottomWide.brand}</p>
                             </div>
-                        </div>
+                        </Link>
                     )}
 
                 </div>

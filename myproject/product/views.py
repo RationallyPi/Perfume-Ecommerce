@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from django.db.models import Count
 from rest_framework.response import Response
 from .serializers import PerfumeListSerializer, PerfumeSerializer
 from .models import Perfume
@@ -20,7 +21,9 @@ class FilterOptionsView(APIView):
         brands = Perfume.objects.values_list('brand__name', flat=True).distinct()
         notes = Perfume.objects.values_list('note__name', flat=True).distinct()
         family = Perfume.objects.values_list('family__name', flat=True).distinct()
+        types = Perfume.objects.values_list('type', flat=True).distinct()
         data = {
+            'types': types,
             'brands': brands,
             'notes': notes,
             'families': family
@@ -36,10 +39,13 @@ class ShopView(APIView):
         family = request.query_params.get('family')
         notes = request.query_params.getlist('note')
         price_max = request.query_params.get('price_max')
-
+        gender = request.query_params.get('gender')
+        perfume_type = request.query_params.get('type')
         perfumes = Perfume.objects.all()
 
         # Apply filters
+        if perfume_type:
+            perfumes = perfumes.filter(type__iexact=perfume_type)
         if brand:
             perfumes = perfumes.filter(brand__name=brand)
         if family:
@@ -49,6 +55,8 @@ class ShopView(APIView):
                 perfumes = perfumes.filter(note__name=note)
         if price_max:
             perfumes = perfumes.filter(price__lte=price_max)
+        if gender:
+            perfumes = perfumes.filter(gender__iexact=gender)
 
         # Pagination
         start = (page - 1) * limit
@@ -67,4 +75,18 @@ class PerfumeDetailView(APIView):
     def get(self, request, slug):
         perfume = Perfume.objects.get(slug=slug)
         serializer = PerfumeSerializer(perfume)
+        return Response(serializer.data)
+
+
+class RelatedPerfumesView(APIView):
+    def get(self, request):
+        notes = request.query_params.getlist('note')
+        exclude_slug = request.query_params.get('exclude')
+        
+        perfumes = Perfume.objects.filter(note__name__in=notes)\
+            .exclude(slug=exclude_slug)\
+            .annotate(match_count=Count('note'))\
+            .order_by('-match_count')[:10]
+        
+        serializer = PerfumeListSerializer(perfumes, many=True)
         return Response(serializer.data)

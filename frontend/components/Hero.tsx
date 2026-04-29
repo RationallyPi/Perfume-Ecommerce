@@ -30,10 +30,10 @@ export default function Hero() {
                 <div className="lg:col-span-7 h-full relative flex items-center justify-center order-1 lg:order-2 py-12">
 
                     {/* Primary Large Image (Centered in this 7-column grid) */}
-                    <div className="relative w-[85%] h-[80%] bg-[#efeeea] shadow-2xl overflow-hidden self-center group">
+                    <div className="relative w-[85%] h-[80%] bg-[#efeeea] shadow-2xl self-center group">
                         <img
                             className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110"
-                            src="https://i.pinimg.com/736x/c8/bc/6b/c8bc6bbf0bdedae0fa2623ee0c6fa749.jpg"
+                            src="http://127.0.0.1:8000/media/perfume_images/actualmain.webp"
                             alt="Vernal Awakening Campaign"
                         />
                         {/* Soft overlay to give it that "Morning Light" feel */}

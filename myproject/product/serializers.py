@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Perfume,Notes, PerfumeImage,PerfumeNote,Brand,Family
+from .models import Decant, Perfume,Notes, PerfumeImage,PerfumeNote,Brand,Family
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,22 +37,37 @@ class PerfumeListSerializer(serializers.ModelSerializer):
         model = Perfume
         fields = ['id', 'name', 'brand', 'price', 'images', 'slug']
 
+class DecantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Decant
+        fields = ['size', 'price']
+
+class SillageSerializer(serializers.Serializer):
+    level = serializers.CharField()
+class LongevitySerializer(serializers.Serializer):
+    level = serializers.CharField()
 
 class PerfumeSerializer(serializers.ModelSerializer):
 
+    type = serializers.CharField(source='get_type_display', read_only=True)
     notes = PerfumeNoteSerializer(source='perfumenote_set', many=True, read_only=True)
     brand = BrandSerializer()
     family = FamilySerializer(many=True)
     images = PerfumeImageSerializer(many=True, read_only=True)
+    decant = DecantSerializer(source='decant_set', many=True, read_only=True)
+    longevity = LongevitySerializer(read_only=True)
+    sillage = SillageSerializer(read_only=True)
+
     class Meta:
         model = Perfume
-        exclude = ['note','date_added','is_restocked','is_seasonal_pick']
+        exclude = ['note','date_added','is_restocked','is_seasonal_pick']  
     
     def to_representation(self, instance):
         data = super().to_representation(instance)
 
         brand = data.pop('brand')
         data['brand'] = brand['name']
+
 
         family = data.pop('family')
         data['family'] = [f['name'] for f in family]
