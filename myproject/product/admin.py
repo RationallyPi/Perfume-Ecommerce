@@ -23,6 +23,7 @@ class LongevityInline(admin.StackedInline):
     extra = 1
 
 class PerfumeAdmin(admin.ModelAdmin):
+    search_fields = ['name', 'brand__name'] 
     inlines = [DecantInline,SillageInline, LongevityInline, PerfumeNoteInline, PerfumeImageInline]
 
 admin.site.register(Perfume, PerfumeAdmin)
